@@ -179,9 +179,12 @@ export default {
                 return {
                     value,
                     index,
-                    gapValue: value * this.valueGap
+                    gapValue: this.getRealValue(value)
                 };
             });
+        },
+        decimalCount () {
+            return this.getDecimalCount(this.valueGap);
         },
         /**
          * 可视刻度尺数量
@@ -264,7 +267,7 @@ export default {
          * @param value
          */
         val (value) {
-            this.$emit('change', value * this.valueGap);
+            this.$emit('change', this.getRealValue(value));
         },
         /**
          * 设置背景渐变方向
@@ -301,6 +304,9 @@ export default {
                 this.fireScrollEnd = null;
                 this.scrollEnd(event);
             }
+        },
+        getRealValue (value) {
+            return Number((value * this.valueGap).toFixed(this.decimalCount));
         },
         /**
          * 获取像素样式
@@ -345,6 +351,11 @@ export default {
                 style = `background: linear-gradient(${direction}, ${color});`;
             }
             document.styleSheets[0].addRule('.virtual-ruler::after', style);
+        },
+        getDecimalCount (num) {
+            const str = String(num);
+            const index = str.indexOf('.');
+            return Math.max(str.length - 1 - index, 0);
         },
         /**
          * 设置刻度值并滑动刻度尺标线到该位置

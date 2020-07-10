@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <img alt="Vue logo" src="./assets/logo.png">
-        <button @click="$refs.ruler.setValue(380)">设置</button>
+        <button @click="$refs.ruler.setValue(38.6)">设置</button>
         <div>身高</div>
         <virtual-ruler
             ref="ruler"
@@ -12,13 +12,14 @@
             :max="2500"
             :default-value="v2"
             :gap="10"
-            :value-gap="0.1" @change="v2 = $event">
+            :value-gap="0.01" @change="v2 = $event">
         </virtual-ruler>
         <div>aaaa</div>
     </div>
 </template>
 
 <script>
+import '../dist/virtual-ruler.css';
 import VirtualRuler from '../dist/virtual-ruler.umd.min';
 console.log(VirtualRuler);
 export default {
