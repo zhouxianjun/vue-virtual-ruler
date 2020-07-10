@@ -19,7 +19,8 @@
 </template>
 
 <script>
-import VirtualRuler from './components';
+import VirtualRuler from '../dist/virtual-ruler.umd.min';
+console.log(VirtualRuler);
 export default {
     name: 'App',
     components: {
