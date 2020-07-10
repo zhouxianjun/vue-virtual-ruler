@@ -1,6 +1,7 @@
 # vue virtual ruler
 
 vue2 高性能刻度尺组件
+![image](https://github.com/zhouxianjun/vue-virtual-ruler/raw/master/src/assets/%E5%B1%8F%E5%B9%95%E5%BD%95%E5%88%B62020-07-10%20%E4%B8%8B%E5%8D%886.gif)
 
 ### Installation
 
