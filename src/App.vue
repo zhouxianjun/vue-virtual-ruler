@@ -5,22 +5,23 @@
         <div>身高</div>
         <virtual-ruler
             ref="ruler"
-            style="margin-top: 20px;width: 80%;margin-left: 50px"
+            style="margin-top: 20px;width: 90%;margin-left: 10px"
             top-border
             :height="50"
             :min="300"
             :max="2500"
             :default-value="v2"
             :gap="10"
-            :value-gap="0.01" @change="v2 = $event">
+            linear-gradient
+            :value-gap="0.1" @change="v2 = $event">
         </virtual-ruler>
-        <div>aaaa</div>
+        <div>{{v2}}</div>
     </div>
 </template>
 
 <script>
 import '../dist/virtual-ruler.css';
-import VirtualRuler from '../dist/virtual-ruler.umd.min';
+import VirtualRuler from './components';
 console.log(VirtualRuler);
 export default {
     name: 'App',
