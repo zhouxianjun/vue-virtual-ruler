@@ -13,6 +13,7 @@
             :max="2500"
             :default-value="v2"
             :gap="10"
+            :point-width="4"
             linear-gradient
             :value-gap="0.1" @change="v2 = $event">
         </virtual-ruler>

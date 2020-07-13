@@ -13,7 +13,7 @@
                         <div class="ruler-wrapper" :style="{height: itemDIVHeight}">
                             <div :style="getItemStyle(item.index)"/>
                         </div>
-                        <div v-if="labelShow(item.index)" class="virtual-ruler-label">
+                        <div v-if="labelShow(item.index)" :style="labelStyle" class="virtual-ruler-label">
                             <slot name="label" :value="item.gapValue" :index="item.index">
                                 {{item.gapValue}}
                             </slot>
@@ -150,7 +150,9 @@ export default {
             ]
         },
         // 是否自动监听元素大小改变事件
-        autoResize: Boolean
+        autoResize: Boolean,
+        // 刻度值label样式
+        labelStyle: Object
     },
     data () {
         return {
@@ -241,13 +243,15 @@ export default {
         },
         /**
          * 刻度尺标线样式
-         * @returns {{left: *, borderRight: string, height: string}}
+         * @returns {{borderLeft: string, left: string, height: string}}
          * @private
          */
         _pointStyle () {
             const width = this.getPx(this.pointWidth);
+            const numberWidth = parseFloat(this.pointWidth);
             return {
-                borderRight: `${width} solid ${this.pointColor}`,
+                borderLeft: `${width} solid ${this.pointColor}`,
+                left: `calc(50% - ${numberWidth / 2 - 1}px)`,
                 height: this.itemDIVHeight,
                 ...(this.pointStyle || {})
             };
