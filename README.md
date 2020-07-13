@@ -10,6 +10,7 @@ npm install virtual-ruler --save
 ```
 
 ```
+import 'virtual-ruler/dist/virtual-ruler.css';
 import VirtualRuler from 'virtual-ruler'
 
 export default {
@@ -64,6 +65,7 @@ export default {
 | linear-gradient    | 刻度尺背景渐变                              | Boolean   |    false  | false      |
 | linear-gradient-direction-var    | 刻度尺背景渐变方向                              | Array   |    false  | ['ro', 'right']      |
 | linear-gradient-color-var    | 刻度尺背景渐变颜色                              | Array   |    false  | ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0) 25%', 'rgba(255, 255, 255, 0) 85%', 'rgba(255, 255, 255, 1) 100%']      |
+| auto-resize    | 是否自动监听元素大小改变并重置刻度尺大小                           | Boolean   |    false  | false      |
 
 
 ### slots

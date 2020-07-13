@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import elementResizeDetectorMaker from 'element-resize-detector';
 export default {
     name: 'VirtualRuler',
     props: {
@@ -149,7 +148,9 @@ export default {
                 'rgba(255, 255, 255, 0) 85%',
                 'rgba(255, 255, 255, 1) 100%'
             ]
-        }
+        },
+        // 是否自动监听元素大小改变事件
+        autoResize: Boolean
     },
     data () {
         return {
@@ -158,7 +159,8 @@ export default {
             val: this.defaultValue || this.min,
             isTouch: false,
             fireScrollEnd: null,
-            width: document.body.clientWidth
+            width: document.body.clientWidth,
+            observer: null
         };
     },
     computed: {
@@ -280,17 +282,32 @@ export default {
          */
         linearGradientColorVar () {
             this.setAfterStyle();
+        },
+        autoSize () {
+            this.setAutoResize();
         }
     },
     mounted () {
-        this.observer = elementResizeDetectorMaker();
-        this.observer.listenTo(this.$el, this.resize.bind(this));
+        this.setAutoResize();
+        this.resize();
         setTimeout(() => this.setValue(this.val));
         this.setAfterStyle();
         this.$el.addEventListener('touchstart', this.touchStart.bind(this));
         this.$el.addEventListener('touchend', this.touchEnd.bind(this));
     },
     methods: {
+        async setAutoResize () {
+            if (this.autoResize) {
+                const elementResizeDetectorMaker = await import('element-resize-detector');
+                this.observer = elementResizeDetectorMaker.default();
+                this.observer.uninstall(this.$el);
+                this.observer.listenTo(this.$el, this.resize.bind(this));
+            } else {
+                if (this.observer) {
+                    this.observer.uninstall(this.$el);
+                }
+            }
+        },
         resize () {
             this.width = this.$refs.scroll.clientWidth;
         },
@@ -396,6 +413,7 @@ export default {
 <style lang="less">
     .virtual-ruler {
         position: relative;
+        width: 100%;
         &::after {
             content: "";
             position: absolute;

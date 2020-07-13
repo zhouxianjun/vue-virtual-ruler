@@ -7,6 +7,7 @@
             ref="ruler"
             style="margin-top: 20px;width: 90%;margin-left: 10px"
             top-border
+            auto-resize
             :height="50"
             :min="300"
             :max="2500"
