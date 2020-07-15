@@ -1,5 +1,5 @@
 <template>
-    <div class="virtual-ruler">
+    <div class="virtual-ruler" :data-vr-id="id">
         <div ref="scroll" class="virtual-ruler-scroll" :style="style" @scroll="scroll">
             <div class="virtual-ruler-body" :style="{minWidth: getPx(size)}">
                 <div class="virtual-ruler-body-item" :style="{transform: 'translateX(0)'}"/>
@@ -27,6 +27,11 @@
 </template>
 
 <script>
+let id = 0;
+function getNextId () {
+    id += 1;
+    return String(id);
+}
 export default {
     name: 'VirtualRuler',
     props: {
@@ -162,7 +167,9 @@ export default {
             isTouch: false,
             fireScrollEnd: null,
             width: document.body.clientWidth,
-            observer: null
+            observer: null,
+            id: getNextId(),
+            styleSheet: this.getStyleSheet()
         };
     },
     computed: {
@@ -276,6 +283,12 @@ export default {
             this.$emit('change', this.getRealValue(value));
         },
         /**
+         * 设置背景渐变
+         */
+        linearGradient () {
+            this.setAfterStyle();
+        },
+        /**
          * 设置背景渐变方向
          */
         linearGradientDirectionVar () {
@@ -300,6 +313,17 @@ export default {
         this.$el.addEventListener('touchend', this.touchEnd.bind(this));
     },
     methods: {
+        getStyleSheet () {
+            for (let i = 0; i < document.styleSheets.length; i++) {
+                const sheet = document.styleSheets.item(i);
+                if (!sheet.href) {
+                    return sheet;
+                }
+            }
+            const style = document.createElement('style');
+            document.head.appendChild(style);
+            return this.getStyleSheet();
+        },
         async setAutoResize () {
             if (this.autoResize) {
                 const elementResizeDetectorMaker = await import('element-resize-detector');
@@ -365,13 +389,23 @@ export default {
         setAfterStyle () {
             let style;
             if (!this.linearGradient) {
-                style = 'content: none !important';
+                style = 'content: none';
             } else {
                 const direction = this.linearGradientDirectionVar.join(' ');
                 const color = this.linearGradientColorVar.join(',');
-                style = `background: linear-gradient(${direction}, ${color});`;
+                style = `background: linear-gradient(${direction}, ${color}); content: ""`;
             }
-            document.styleSheets[0].addRule('.virtual-ruler::after', style);
+            const selector = `.virtual-ruler[data-vr-id="${this.id}"]::after`;
+            this.deleteAfterCSSRule(selector);
+            this.styleSheet.addRule(selector, style);
+        },
+        deleteAfterCSSRule (selector) {
+            for (let i = 0; i < this.styleSheet.rules.length; i++) {
+                if (this.styleSheet.rules.item(i).selectorText === selector) {
+                    this.styleSheet.deleteRule(i);
+                    return;
+                }
+            }
         },
         getDecimalCount (num) {
             const str = String(num);

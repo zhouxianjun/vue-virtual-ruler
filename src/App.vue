@@ -14,17 +14,28 @@
             :default-value="v2"
             :gap="10"
             :point-width="4"
-            linear-gradient
+            :linear-gradient="linearGradient"
             :value-gap="0.1" @change="v2 = $event">
         </virtual-ruler>
         <div>{{v2}}</div>
+        <virtual-ruler
+            ref="ruler2"
+            style="margin-top: 20px;width: 90%;margin-left: 10px"
+            top-border
+            auto-resize
+            :height="50"
+            :min="300"
+            :max="2500"
+            :gap="10"
+            :point-width="4"
+            :value-gap="0.1">
+        </virtual-ruler>
     </div>
 </template>
 
 <script>
 import '../dist/virtual-ruler.css';
 import VirtualRuler from './components';
-console.log(VirtualRuler);
 export default {
     name: 'App',
     components: {
@@ -33,7 +44,8 @@ export default {
     data () {
         return {
             v: 400,
-            v2: 35
+            v2: 35,
+            linearGradient: true
         };
     }
 };
