@@ -417,7 +417,12 @@ export default {
          * @param value
          */
         setValue (value) {
-            this._setValue(value / this.valueGap);
+            const {valueGap} = this;
+            if (valueGap > 0 && valueGap < 1) {
+                this._setValue(Math.ceil(value / valueGap));
+            } else {
+                this._setValue(value / valueGap);
+            }
         },
         _setValue (value) {
             const index = this.list.findIndex(item => item.value === value);
